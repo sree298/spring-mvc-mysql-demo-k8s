@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>spring-mvc-mysql-demo</artifactId>
+    <artifactId>spring-mvc-mysql-demo-docker</artifactId>
     <version>1.0.0</version>
 
     <!-- IMPORTANT: WAR for Tomcat deployment -->
     <packaging>war</packaging>
 
-    <name>spring-mvc-mysql-demo</name>
+    <name>spring-mvc-mysql-demo-docker</name>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -70,7 +70,7 @@
 
     <build>
         <!-- This will be the WAR file name -->
-        <finalName>spring-mvc-mysql-demo</finalName>
+        <finalName>spring-mvc-mysql-demo-docker</finalName>
 
         <plugins>
             <plugin>

@@ -30,15 +30,20 @@ public class WebConfig implements WebMvcConfigurer {
         return resolver;
     }
 
-    // DataSource configuration for MySQL
+    // DataSource configuration for MySQL (Docker)
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/demo_db?useSSL=false&serverTimezone=UTC");
-        dataSource.setUsername("demo_user");      // <-- same as you created in MySQL
-        dataSource.setPassword("demo123");  // <-- same as you created in MySQL
+
+        // IMPORTANT: 'db' is the MySQL service name in docker-compose.yml
+        dataSource.setUrl(
+            "jdbc:mysql://db:3306/demo_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+        );
+
+        dataSource.setUsername("demo_user");   // must match docker-compose env
+        dataSource.setPassword("demo123");     // must match docker-compose env
 
         return dataSource;
     }
@@ -55,4 +60,3 @@ public class WebConfig implements WebMvcConfigurer {
         return new DataSourceTransactionManager(dataSource);
     }
 }
-

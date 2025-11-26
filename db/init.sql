@@ -1,0 +1,11 @@
+-- This DB will already be created by MYSQL_DATABASE, but safe to include:
+CREATE DATABASE IF NOT EXISTS demo_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE demo_db;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    age INT NOT NULL
+);
+
