@@ -6,7 +6,7 @@ RUN rm -rf /usr/local/tomcat/webapps/ROOT
 
 # Copy your WAR file into Tomcat webapps
 # WAR name must match what Maven builds (finalName in pom.xml)
-COPY target/spring-mvc-mysql-demo-docker.war /usr/local/tomcat/webapps/spring-mvc-mysql-demo-docker.war
+COPY target/spring-mvc-mysql-demo-k8s.war /usr/local/tomcat/webapps/spring-mvc-mysql-demo-k8s.war
 
 # Expose Tomcat port
 EXPOSE 8080
