@@ -14,19 +14,24 @@ public class UserController {
     @Autowired
     private UserDao userDao;
 
-    // Show form
+    // Show form to add new user
     @GetMapping("/form")
     public String showForm(Model model) {
         model.addAttribute("user", new User());
         return "user-form";  // /WEB-INF/views/user-form.jsp
     }
 
-    // Handle form submit
+    // Save user and redirect to list page
     @PostMapping("/save")
-    public String saveUser(@ModelAttribute("user") User user, Model model) {
+    public String saveUser(@ModelAttribute("user") User user) {
         userDao.save(user);
-        model.addAttribute("user", user);
-        return "user-success"; // /WEB-INF/views/user-success.jsp
+        return "redirect:/user/list"; // After save show table
+    }
+
+    // Show user list table
+    @GetMapping("/list")
+    public String listUsers(Model model) {
+        model.addAttribute("users", userDao.findAll());
+        return "user-list"; // /WEB-INF/views/user-list.jsp
     }
 }
-

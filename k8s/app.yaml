@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: spring-mvc-app
+  # namespace: spring-demo   # Uncomment if needed
 spec:
   replicas: 1
   selector:
@@ -15,19 +16,64 @@ spec:
       containers:
         - name: spring-mvc-app
           image: spring-mvc-mysql-demo-k8s:1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+
+          # Environment variables for DB connection
+          env:
+            - name: DB_URL
+              value: jdbc:mysql://db:3306/demo_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+            - name: DB_USERNAME
+              value: demo_user
+            - name: DB_PASSWORD
+              value: demo123
+
+          # Optional extra vars (not used by WebConfig but useful to keep)
+            - name: DB_HOST
+              value: db
+            - name: DB_NAME
+              value: demo_db
+
+          # Health checks
+          livenessProbe:
+            httpGet:
+              path: /spring-mvc-mysql-demo-k8s/
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /spring-mvc-mysql-demo-k8s/
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          # Resource limits & requests (optional but recommended)
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: spring-mvc-app-service
+  name: spring-mvc-service
+  # namespace: spring-demo
 spec:
+  type: NodePort
   selector:
     app: spring-mvc-app
-  type: NodePort
   ports:
-    - port: 8080        # service port inside cluster
-      targetPort: 8080  # container port
-      nodePort: 30080   # host port via NodePort (kind exposes this)
-
+    - port: 8080           # internal cluster port
+      targetPort: 8080     # pod container port
+      nodePort: 30080      # external access port

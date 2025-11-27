@@ -21,40 +21,50 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(basePackages = "com.example.demo")
 public class WebConfig implements WebMvcConfigurer {
 
-    // View resolver for JSP in /WEB-INF/views/
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".jsp");
+        resolver.setContentType("text/html; charset=UTF-8");
         return resolver;
     }
 
-    // DataSource configuration for MySQL (Docker)
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
-        // IMPORTANT: 'db' is the MySQL service name in docker-compose.yml
-        dataSource.setUrl(
-            "jdbc:mysql://db:3306/demo_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
-        );
+        // Read environment variables (K8s / Docker)
+        String url = System.getenv("DB_URL");
+        String username = System.getenv("DB_USERNAME");
+        String password = System.getenv("DB_PASSWORD");
 
-        dataSource.setUsername("demo_user");   // must match docker-compose env
-        dataSource.setPassword("demo123");     // must match docker-compose env
+        // If not provided, fallback for local IDE/Tomcat
+        if (url == null || url.isEmpty()) {
+            url = "jdbc:mysql://localhost:3306/demo_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+        }
+        if (username == null || username.isEmpty()) {
+            username = "demo_user";
+        }
+        if (password == null || password.isEmpty()) {
+            password = "demo123";
+        }
+
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+
+        System.out.println("Using DB URL: " + url);  // debug line
 
         return dataSource;
     }
 
-    // JdbcTemplate bean
     @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
-    // Transaction manager
     @Bean
     public PlatformTransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);

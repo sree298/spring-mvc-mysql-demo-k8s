@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>spring-mvc-mysql-demo-k8s</artifactId>
+    <artifactId>spring-mvc-mysql-demo</artifactId>
     <version>1.0.0</version>
 
-    <!-- IMPORTANT: WAR for Tomcat deployment -->
+    <!-- WAR for Tomcat deployment -->
     <packaging>war</packaging>
 
     <name>spring-mvc-mysql-demo-k8s</name>
@@ -21,6 +21,8 @@
         <spring.version>5.3.39</spring.version>
         <servlet.api.version>4.0.1</servlet.api.version>
         <jstl.version>1.2</jstl.version>
+        <hibernate.validator.version>6.2.5.Final</hibernate.validator.version>
+        <validation.api.version>2.0.1.Final</validation.api.version>
     </properties>
 
     <dependencies>
@@ -66,6 +68,20 @@
             <artifactId>jstl</artifactId>
             <version>${jstl.version}</version>
         </dependency>
+
+        <!-- Bean Validation API (for @NotBlank, @Email, @Min, etc.) -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation.api.version}</version>
+        </dependency>
+
+        <!-- Hibernate Validator (implementation of Bean Validation) -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -73,6 +89,7 @@
         <finalName>spring-mvc-mysql-demo-k8s</finalName>
 
         <plugins>
+            <!-- WAR plugin -->
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
@@ -80,7 +97,17 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+
+            <!-- Explicit Compiler Plugin (Java 11) -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
-
