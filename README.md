@@ -29,3 +29,7 @@ kubectl apply -f k8s/mysql.yaml
 ```bash
 kubectl apply -f k8s/app.yaml
 ```
+7. **check the browser**
+```bash
+http://localhost:8085/spring-mvc-mysql-demo-k8s
+```
