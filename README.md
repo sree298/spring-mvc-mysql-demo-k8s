@@ -30,7 +30,7 @@ kubectl apply -f k8s/mysql.yaml
 kubectl apply -f k8s/app.yaml
 ```
 7. **Port Forward**
-``bash
+```bash
  kubectl get all
 kubectl port-forward service/spring-mvc-service 8088:8080
  ```
