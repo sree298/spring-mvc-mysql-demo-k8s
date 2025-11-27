@@ -29,7 +29,12 @@ kubectl apply -f k8s/mysql.yaml
 ```bash
 kubectl apply -f k8s/app.yaml
 ```
-7. **check the browser**
+7. **Port Forward**
+``bash
+ kubectl get all
+kubectl port-forward service/spring-mvc-service 8088:8080
+ ```
+8. **check the browser**
 ```bash
-http://localhost:8085/spring-mvc-mysql-demo-k8s
+http:// 127.0.0.1:8088/spring-mvc-mysql-demo-k8s
 ```
