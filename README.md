@@ -38,3 +38,7 @@ kubectl port-forward service/spring-mvc-service 8088:8080
 ```bash
 http://127.0.0.1:8088/spring-mvc-mysql-demo-k8s
 ```
+9. **Delete the pods, services, deployments if not need**
+```bash
+kubectl delete all --all
+```
