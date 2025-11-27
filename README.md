@@ -36,5 +36,5 @@ kubectl port-forward service/spring-mvc-service 8088:8080
  ```
 8. **check the browser**
 ```bash
-http:// 127.0.0.1:8088/spring-mvc-mysql-demo-k8s
+http://127.0.0.1:8088/spring-mvc-mysql-demo-k8s
 ```
