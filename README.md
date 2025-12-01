@@ -42,3 +42,13 @@ http://127.0.0.1:8088/spring-mvc-mysql-demo-k8s
 ```bash
 kubectl delete all --all
 ```
+**Other commands**
+```bash
+kubectl config view
+kubectl config current-context
+kubectl config get-contexts
+kubectl config use-context <cluster name>
+kind get clusters
+kind delete cluster --name <cluster name>
+```
+
